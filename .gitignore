@@ -1,0 +1,8 @@
+.next
+.idea
+/dist
+.vercel
+
+.vscode
+
+node_modules/
