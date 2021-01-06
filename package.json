@@ -14,7 +14,7 @@
     "build:next": "next build",
     "build": "npm run build:next && npm run build:server",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "prod": "concurrently --restart-tries=10 \"npm run start\"",
+    "prod": "concurrently --restart-tries=100 \"npm run start\"",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

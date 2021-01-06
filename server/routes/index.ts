@@ -5,7 +5,7 @@ let router = Router();
 //получить IP для сервера
 router.get('/', async (req:Request, res:Response)=>{
     const data = {
-        status: req.params.status || "OK!!!"
+        status: req.params.status || "BAD!!!!"
     }
     res.end(JSON.stringify(data));
 });
