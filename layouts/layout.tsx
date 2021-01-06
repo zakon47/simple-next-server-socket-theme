@@ -73,4 +73,4 @@ const LayoutDefault: FC<Props> = ({ children, home }) => {
   )
 }
 
-export {LayoutDefault}
+export default LayoutDefault

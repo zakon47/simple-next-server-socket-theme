@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { LayoutDefault } from '../layouts/layout';
+import LayoutDefault from '../layouts/layout';
 
 export const Home: FC = () => {
   return (

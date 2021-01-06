@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { LayoutDefault, siteTitle } from '../layouts/layout';
+import LayoutDefault, { siteTitle } from '../layouts/layout';
 
 export default function Error() {
   return (
