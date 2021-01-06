@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import React, { FC } from "react";
 import styles from './layout.module.scss'
-import utilStyles from '../src/styles/utils.module.scss'
+import utilStyles from '../../src/styles/utils.module.scss'
 import Link from 'next/link'
-import { Header } from '../src/components/Header';
+import { Header } from '../../src/components/Header';
 
 const name = '[Your Name]'
 export const siteTitle = 'Next.js Sample Website'
