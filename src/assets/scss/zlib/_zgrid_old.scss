@@ -1,0 +1,237 @@
+$ed: 1px;
+$row_name: 'row';
+$col_name: 'col';
+$gutter_name: 'gutter';
+$container_name: 'box';
+$container_name_fluid: 'fluid';
+$row: 'row';
+$breakPoint: (
+        xxs:320,    //xxs
+        xs:480,     //xs
+        sm:768,     //sm
+        md:1024,     //md
+        lg:1440,    //lg
+);
+
+//1200- FullHD >
+//980 - hd >
+//768 - верт планшеты >
+//768 - планшеты <
+//480 - телефоны <
+//320
+
+$breakPoint_cut: '-';       //разделить
+$gutter: 20,0,10;           //отступы между колонками (первый default)
+$rows: 0,15,20;             //отступы по кроям row (первый default)
+$column: 24;                //кол-во колонок
+$column_cut: '-';           //разделитель
+$column_count: length($column);
+$indent: 20px;
+$c: 15px;
+
+//.START{content: inspect($breakPoint); width: 11px;}
+
+$breakPoint_val_n: map_values($breakPoint);
+//$breakPoint_val_n:sort($breakPoint_val, $algorithm: "quick"); //отсортированный список цифр
+$BP:();                                                       //ОБРАБОТАННЫЙ БрекПоинт
+$BP_KEY:();                                                   //список ключей
+$BP_VAL:();                                                   //список значений
+$min: nth($breakPoint_val_n,1);                               //минимальное число
+$max: nth($breakPoint_val_n,length($breakPoint_val_n));       //максимальное число
+
+//Формируем отсортированный Брекпоинт массив
+@for $i from 1 through length($breakPoint_val_n) {
+    @each $key,$val in $breakPoint{
+        @if nth($breakPoint_val_n,$i)==$val{
+            $BP:map-merge($BP,($key:$val));
+            $BP_KEY:append($BP_KEY,$key);
+            $BP_VAL:append($BP_VAL,$val);
+        }
+    }
+}
+$breakPoint: $BP;
+$breakPoint_count: length($breakPoint);                       //кол-во всего БрекПоинтов
+
+//END{content: inspect($breakPoint); width: 11px;}
+
+
+
+
+//.#{$row_name}{
+//    letter-spacing: -0.3em;
+//    margin-left: -(nth($gutter,1))*$ed;
+//    margin-right: 0;
+//}
+//.#{$col_name} {
+//    display: inline-block;
+//    min-height: 1px;
+//    vertical-align: top;
+//    box-sizing: border-box;
+//    width: 100%;
+//    letter-spacing: normal;
+//}
+
+//default value
+$gut: nth($gutter,1);
+$gut2: $gut/2;
+
+.#{$container_name}{
+    margin: auto;
+    width: $max*1*$ed;
+    max-width: $max*1*$ed;
+    &-#{$container_name_fluid}{
+        max-width: $max*1*$ed;
+        margin: auto;
+    }
+}
+$i:0;
+@each $BP-key, $BP-val in $BP{
+    @if $i==0{
+        @media (max-width: $BP-val*$ed){
+            .#{$container_name}{
+                max-width: $BP-val*$ed;
+                width: inherit;
+            }
+        }
+        $i: $i+1;
+    }
+}
+
+//gutter=default
+//.#{$col_name}{display:inline-block; min-height:1px; vertical-align:top; box-sizing:border-box; letter-spacing: normal; padding: 0 $gut2*$ed }
+.#{$col_name}{
+    display:inline-block; min-height:1px; vertical-align:top; box-sizing:border-box; width: 100%; letter-spacing: normal;
+    //&:first-of-type{
+    //    margin-left: 0;
+    //}
+}
+
+////Создаем gutter без row..
+//@for $g from 1 through length($gutter) {
+//    $gn: nth($gutter,$g);  //20,0,10,30,40
+//    .#{$gutter_name}-#{$gn}{
+//        padding: 0 ($gn/2)*$ed;
+//    }
+//}
+//Создаем row..
+//@for $r from 1 through length($rows) {
+//    $rn: nth($rows,$r);  //0,10,20
+//    $select_r: #{$row_name}-#{$rn};         // .row-10
+//    @if $r==1{
+//        $select_r: #{$row_name},#{$row_name}-#{$rn};            // .row
+//    }
+//    $margin: ($rn*1-$gut2*1)*$ed;
+//    //Создаем row..
+//    .#{$select_r}{
+//        margin: 0 $margin;
+//        padding: 0;
+//        letter-spacing: -0.29em;
+//        & > .#{$col_name}{
+//            padding: 0 $gut2*$ed;
+//            //margin-left: -0.28em;
+//            &:last-of-type{
+//                margin-left: 0;
+//            }
+//        }
+//        @for $g from 1 through length($gutter) {
+//            $gn: nth($gutter,$g);  //20,0,10,30,40
+//            $margin: ($rn*1-($gn/2))*$ed;
+//            &.#{$gutter_name}-#{$gn}{
+//                margin: 0 $margin;
+//                & > .#{$col_name}{
+//                    padding: 0 ($gn/2)*$ed;
+//                }
+//            }
+//        }
+//    }
+//}
+
+/*Вертикальное выравнивание*/
+//.row-vt > .col{vertical-align:top}
+//.row-vm > .col{vertical-align:middle}
+//.row-vb > .col{vertical-align:bottom}
+.va{vertical-align:top}
+//.vm{vertical-align:middle}
+//.vb{vertical-align:bottom}
+
+
+
+@each $BP-key, $BP-val in $BP{  //бекпоинты
+    @debug $BP;
+    /** => RESIZE - #{$BP-key}*/
+    @media (min-width: $BP-val*$ed){
+
+        //@include hidden-visible($BP-key);   //Создаем visible + hidden
+
+
+        //Создаем gutter без row..
+        @for $g from 1 through length($gutter) {
+            $gn: nth($gutter,$g);  //20,0,10,30,40
+            .#{$gutter_name}-#{$BP-key}-#{$gn}{
+                padding: 0 ($gn/2)*$ed;
+            }
+        }
+        //Создаем row..
+        @for $r from 1 through length($rows) {
+            $rn: nth($rows,$r);  //0,10,20
+            $select_r: #{$row_name}-#{$BP-key}-#{$rn};         // .row-10
+            @if $r==1{
+                $select_r: #{$row_name},#{$row_name}-#{$BP-key}-#{$rn};            // .row
+            }
+            $margin: ($rn*1-$gut2*1)*$ed;
+            //Создаем row..
+            .#{$select_r}{
+                margin: 0 $margin;
+                padding: 0;
+                letter-spacing: -0.29em;
+                & > .#{$col_name}{
+                    padding: 0 $gut2*$ed;
+                    //margin-left: -0.28em;
+                    &:last-of-type{
+                        margin-left: 0;
+                    }
+                }
+                @for $g from 1 through length($gutter) {
+                    $gn: nth($gutter,$g);  //20,0,10,30,40
+                    $margin: ($rn*1-($gn/2))*$ed;
+                    &.#{$gutter_name}-#{$BP-key}-#{$gn}{
+                        margin: 0 $margin;
+                        & > .#{$col_name}{
+                            padding: 0 ($gn/2)*$ed;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //Делаем conteiner-fluid
+        .#{$container_name}{
+            width: $BP-val*1*$ed;
+        }
+        @for $r from 1 through length($rows) { // цикл по крайним отступам
+            $rn: nth($rows,$r);  //0,10,20 - отступы
+            $select_r: #{$container_name}-#{$BP-key}-#{$rn};         // .box-lg-10
+            //@if $r==1{
+            //    $select_r: #{$row_name};            // .row
+            //}
+            .#{$select_r}{
+                padding: 0 $rn*$ed;
+            }
+        }
+        @for $i from 1 through $column_count {  // цикл по кол-во колонок
+            $col: nth($column,$i);  //12 or 24  - колонки
+            @for $k from 1 through $col {   //1,2,3,4   -  цикл по колонке
+                @if $i==1{
+                    .#{$BP-key}-#{$k},.#{$BP-key}-#{$k}-#{$col} {
+                        width: ($k*100)/$col*1%;
+                    }
+                }@else {
+                    .#{$BP-key}-#{$k}-#{$col} {
+                        width: ($k*100)/$col*1%;
+                    }
+                }
+            }
+        }
+    }
+}

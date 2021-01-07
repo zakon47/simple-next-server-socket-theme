@@ -1,0 +1,81 @@
+$ed: 1px;
+$container: 'fc';
+$container_fluid: 'fd';
+$container_fixed: 'fx';
+$BP: (
+    x:0 320,            //xxs перешелкивается = будет размер
+    xx:480 480,         //xs
+    xxt:640 640,        //sm
+    xxtt:945 945,       //md
+    xxttd:1070 1070,    //lg
+    //xxttdd:1330 1330,   //lg
+);
+$indents: 20,0;        //для container
+
+//==========================> [фоормируем базовые настройки]
+//.vis-x, .vis-xx, .vis-xxs, .vis-xxss, .vis-xxssm, .vis-xxssmm {
+//    display: none !important;
+//}
+//==========================> [фоормируем базовые настройки] - реализация
+$razmery: "";   //собираюм общую строку vis-XXX
+@each $BP-key, $BP-val in $BP{
+    @if($BP-key==nth(nth($BP,1),1)){                    //первый поинт
+        $razmery: ".vis-#{$BP-key}";
+    }@else{                                             //остальные
+        $razmery: "#{$razmery}, .vis-#{$BP-key}";
+    }
+}
+#{$razmery}{
+    display: none !important
+}
+//==========================>прописали [container]
+.#{$container},.#{$container_fluid},.#{$container_fixed}{
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: nth($indents,1)*$ed;
+    padding-right: nth($indents,1)*$ed;
+    min-width: nth(nth(nth($BP,1),2),2)*$ed;
+}
+.#{$container_fixed}{
+    max-width: nth(nth(nth($BP,length($BP)),2),2)*$ed;
+}
+.#{$container_fluid}{
+    width: nth(nth(nth($BP,length($BP)),2),2)*$ed;
+}
+
+$kk:2;
+@each $BP-key, $BP-val in $BP{
+    $checkPoint: nth($BP-val, 1);       //320
+    $checkPoint2: nth($BP-val, 2);       //320
+    @if($BP-key==nth(nth($BP,1),1)){        //первый поинт
+        $nextElement: nth(nth(nth($BP,$kk),2),1);     //следующий поинт
+        @media (max-width: -1px+$nextElement){
+            .vis-#{$BP-key}{
+                display: block !important
+            }
+            .#{$container_fluid}{
+                width: $checkPoint*$ed;
+            }
+        }
+    }@elseif($BP-key==nth(nth($BP,length($BP)),1)){ //последний поинт
+        @media (min-width: #{$checkPoint}px){
+            .vis-#{$BP-key}{
+                display: block !important
+            }
+        }
+
+    }@else{
+        $nextElement: nth(nth(nth($BP,$kk),2),1);     //следующий поинт
+        @media (max-width: -1px+$nextElement) and (min-width: #{$checkPoint}px){
+            .vis-#{$BP-key}{
+                display: block !important
+            }
+            .#{$container_fluid}{
+                width: $checkPoint*$ed;
+            }
+        }
+    }
+    $kk: $kk+1;
+}
+

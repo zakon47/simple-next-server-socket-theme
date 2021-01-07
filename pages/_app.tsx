@@ -1,4 +1,5 @@
 import { AppProps /*, AppContext */ } from "next/app";
+import '../src/assets/scss/global.scss';
 
 import { ThemeProvider } from "theme-ui";
 import theme from "../src/theme-ui";

@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { Box, Flex, Heading } from "theme-ui";
+import { Box, Flex, Heading, Button, useColorMode } from "theme-ui";
 
 const Header = () => {
-  // const [colorMode, setColorMode] = useColorMode();
-
+  const [colorMode, setColorMode] = useColorMode()
   const onClick = async () => {
     const d = await fetch('/api');
     console.log(d)
@@ -21,8 +20,8 @@ const Header = () => {
             <Link href="/">
               <a>Home</a>
             </Link>
-            <Link href="/132">
-              <a>Services</a>
+            <Link href="/ui">
+              <a>UI</a>
             </Link>
             <Link href="/pricing">
               <a>Pricing!</a>
@@ -35,6 +34,10 @@ const Header = () => {
               <a>Sign Up</a>
             </Link>
           </nav>
+          {/*<Button*/}
+          {/*  onClick={() => setColorMode(colorMode === 'light' ? 'zakon' : 'light')}>*/}
+          {/*  Toggle {colorMode === 'light' ? 'Zakon' : 'Light'}*/}
+          {/*</Button>*/}
           <button onClick={onClick}>onClick me</button>
         </div>
       </div>

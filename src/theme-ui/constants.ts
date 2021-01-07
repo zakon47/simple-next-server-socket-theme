@@ -1,4 +1,5 @@
 /**
  * Constants for responsiveness
  */
-export const responsiveWidths: number[] = [728, 768, 992, 1190];
+export const responsiveWidths: string[] = ['480px', '768px', '1100px'];
+export const getters: number[] = [10, 15, 20];

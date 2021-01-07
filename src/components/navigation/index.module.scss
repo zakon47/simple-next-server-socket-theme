@@ -1,0 +1,37 @@
+.wrap{
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  align-items: stretch;
+  //padding: 5px 0;
+  width: 100%;
+}
+.left{
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.center{
+  display: flex;
+  align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 30%;
+}
+.right{
+  display: flex;
+  align-items: center;
+  color: #fff;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: flex-end;
+  button {
+    padding: 5px 10px;
+    max-width: 100px;
+    width: 100%;
+    display: block;
+  }
+}

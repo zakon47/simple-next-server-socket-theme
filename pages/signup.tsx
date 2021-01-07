@@ -1,15 +1,11 @@
 import React, { FC } from "react";
 import LayoutDefault from '../layouts/LayoutDefault/LayoutDefault';
+import MyButton from '../src/components/button/my-button';
 
 export const Home: FC = () => {
   return (
-    <LayoutDefault>
-      <section>
-        <div className="container">
-          <h1>SIGNUP!</h1>
-          {Array(20).map((elem,idx)=>(<li key={idx}>{idx}</li>))}
-        </div>
-      </section>
+    <LayoutDefault home>
+      <MyButton label="презаголовок">Продолжение</MyButton>
     </LayoutDefault>
   );
 };

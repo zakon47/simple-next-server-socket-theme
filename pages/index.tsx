@@ -1,48 +1,41 @@
-import Head from 'next/head'
-import LayoutDefault, {siteTitle } from '../layouts/LayoutDefault/LayoutDefault'
-import utilStyles from '../src/styles/utils.module.scss'
-import { getSortedPostsData } from '../src/lib/posts'
-import Link from 'next/link'
-import Date from '../src/components/date'
+import React, { FC } from 'react';
+import LayoutMain from '../layouts/LayoutMain/LayoutMain';
+import FormSignup from '../src/components/forms/form-signup/form-signup';
 
-export default function Home({ allPostsData }) {
-  return (
-    <LayoutDefault home>
-      <Head>
-        <title>{siteTitle}!</title>
-      </Head>
-      <section className={utilStyles.headingMd}>
-        <p>[Your Self Introduction] !!!!</p>
-        <p>
-          (This is a sample website - you’ll be building a site like this in{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
-      </section>
-      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
-        <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
-                <a>{title}</a>
-              </Link>
-              <br />
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </LayoutDefault>
-  )
+type Element = {
+  postId: number
+  id: number
+  name: string
+  email: string
+  body: string
 }
 
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData()
+interface IProps {
+  comments: Array<Element>
+}
+
+const Index = (props: IProps) => {
+  const {comments} = props;
+  return (
+    <LayoutMain>
+      <FormSignup/>
+
+      <div>НАЙДЕНО: {comments.length} <small>записей</small></div>
+      <hr/>
+      {comments && comments.map(elem => (
+        <div key={elem.id} style={{marginBottom:20}}>
+          <b>{elem.name}</b> - [{elem.email}]
+          <div>{elem.body}</div>
+        </div>
+      ))}
+    </LayoutMain>
+  );
+};
+Index.getInitialProps = async (ctx) => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/comments')
+  const json = await res.json();
   return {
-    props: {
-      allPostsData
-    }
+    comments: json || []
   }
 }
+export default Index;

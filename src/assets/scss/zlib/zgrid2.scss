@@ -1,0 +1,424 @@
+body{margin:0;}
+*{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+//——————————————————————————————————————————————
+//——————————————————— OPTIONS ——————————————————————
+//——————————————————————————————————————————————
+$ed: 1px;
+$container-indent: 'i';
+$offset_name: 'o';
+$push_name: 'ph';
+$pull_name: 'pl';
+$row: 'row';
+$col: 'col';
+$vvv: 'vvv';
+$row_vertical: 'vv';
+$vertical: 'v';
+$d--0: '-';
+$d--1: '';
+$gutter_name: 'g';
+$container: 'ct';
+//$container_fluid: 'fluid';    //оригинал
+//$container_fixed: 'fx';
+$container_fluid: 'fd';
+$container_fixed: 'fx';
+$BP: (
+        xxs:0 320,    //xxs перешелкивается = будет размер
+        xs:480 480,     //xs
+        sm:768 768,     //sm
+        md:950 950,   //md
+        lg:1140 1140,   //lg
+        lgg:1240 1240,   //lgg
+);
+$gutters: 20,0,10,30,40;           //отступы между колонками (первый default)
+$rows: 0,10;             //отступы по кроям row (первый default)
+$column: 24;                //кол-во колонок
+$column_count: length($column); //типо если будут 2 сетки!
+$indents: 15, 20, 10,0;        //для container
+
+//——————————————————————————————————————————————
+//——————————————————— ENGINE ——————————————————————
+//——————————————————————————————————————————————
+
+.hide{
+    display: none;
+}
+
+//Значения по умолчанию
+$gut: nth($gutters,1);
+$gut2: $gut/2;
+
+//==========================>прописали [container]
+.#{$container},.#{$container_fluid},.#{$container_fixed}{
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: nth($indents,1)*$ed;
+    padding-right: nth($indents,1)*$ed;
+    min-width: nth(nth(nth($BP,1),2),2)*$ed;
+}
+.#{$container_fixed}{
+    max-width: nth(nth(nth($BP,length($BP)),2),2)*$ed;
+}
+//тут с вертикальным переключателем
+.#{$col}{
+    float: left;
+    width: 100%;
+    min-height: 1px;
+    position: relative;
+}
+
+////==========================>прописали [row+col] по умолчанию
+$linkRow: '';
+@for $i from 1 through length($rows) {
+    $rowx: nth($rows,$i);        //10 потом 0, потом 20
+    @if($i == 1){
+        $linkRow: "#{$row},.#{$row}#{$d--1}#{$rowx}";
+    }@else{
+        $linkRow: "#{$linkRow},.#{$row}#{$d--1}#{$rowx}";
+    }
+}
+.#{$linkRow}{
+    &:after{
+        clear: both;
+        content: " ";
+        display: table;
+    }
+    &>.#{$col}{
+        padding-left: $gut2*$ed;
+        padding-right: $gut2*$ed;
+    }
+    &.#{$vvv}{
+        letter-spacing: -0.32em;
+        &>.#{$col}{
+            float: none;
+            display: inline-block;
+            vertical-align: top;
+            letter-spacing: normal;
+        }
+    }
+}
+@for $i from 1 through length($rows) {
+    $rowx: nth($rows,$i);        //10 потом 0, потом 20
+    $r: ($rowx*1)-($gut2*1);
+    @if($i == 1){
+        .#{$row},.#{$row}#{$d--1}#{$rowx}{
+            margin-left: $r*$ed;
+            margin-right: $r*$ed;
+        }
+    }@else{
+        .#{$row}#{$d--1}#{$rowx}{
+            margin-left: $r*$ed;
+            margin-right: $r*$ed;
+        }
+    }
+}
+
+
+//.row,.#{$row}#{$d--1}10,.#{$row}#{$d--1}0,.#{$row}#{$d--1}20{
+//    letter-spacing: -0.29em;
+//}
+//.row,.#{$row}#{$d--1}10{  margin: 0 0px;} // r10-10
+//.#{$row}#{$d--1}0{  margin: 0 -10px;}      //r0-10
+//.#{$row}#{$d--1}20{  margin: 0 10px;}      //r20-10
+//.row>.#{$col},.#{$row}#{$d--1}10>.#{$col},.#{$row}#{$d--1}0>.#{$col},.#{$row}#{$d--1}20>.#{$col}{
+//    padding: 0 10px;
+//}
+
+
+@each $BP-key, $BP-val in $BP{
+    $checkPoint: nth($BP-val,1);            //320
+    $resizePoint: nth($BP-val,2);           //300
+    @media (min-width: $checkPoint*$ed){
+        //==========================>прописали [container]
+        @for $i from 1 through length($indents) {
+            $indent: nth($indents,$i);
+            .#{$BP-key}#{$d--0}#{$container-indent}#{$d--1}#{$indent}{      //xxs-indent-20
+                padding-left: $indent*$ed;
+                padding-right: $indent*$ed;
+            }
+        }
+        @if($BP-key!=nth(nth($BP,1),1)){
+            .#{$container}{
+                width: $resizePoint*$ed;
+            }
+        }
+        ////==========================>прописали [gutter]
+        //@for $g from 1 through length($gutters) {
+        //    $gut: nth($gutters,$g);        //10 потом 0, потом 20
+        //    $gut2: $gut/2;
+        //    .#{$BP-key}#{$d--0}#{$gutter_name}#{$d--1}#{$gut}>.#{$col}{
+        //        padding: 0 $gut2*$ed;
+        //    }
+        //}
+        //==========================>прописали [row+gutter+col]
+        @for $i from 1 through length($rows) {
+            $rowx: nth($rows,$i);        //10 потом 0, потом 20
+            @for $g from 1 through length($gutters) {
+                $gut: nth($gutters,$g);        //10 потом 0, потом 20
+                $gut2: $gut/2;
+                $r: ($rowx*1)-($gut2*1);
+                @if($i == 1){
+                    .#{$row}.#{$BP-key}#{$d--0}#{$gutter_name}#{$d--1}#{$gut},.#{$row}#{$d--1}#{$rowx}.#{$BP-key}#{$d--0}#{$gutter_name}#{$d--1}#{$gut}{
+                        margin-left: $r*$ed;
+                        margin-right: $r*$ed;
+                        &>.#{$col}{
+                            padding-left: $gut2*$ed;
+                            padding-right: $gut2*$ed;
+                        }
+                    }
+                }@else{
+                    .#{$row}#{$d--1}#{$rowx}.#{$BP-key}#{$d--0}#{$gutter_name}#{$d--1}#{$gut}{
+                        margin-left: $r*$ed;
+                        margin-right: $r*$ed;
+                        &>.#{$col}{
+                            padding-left: $gut2*$ed;
+                            padding-right: $gut2*$ed;
+                        }
+                    }
+                }
+            }
+        }
+        //==========================>прописали [размеры xxs-6]
+        @if($column_count==1){
+            @for $k from 1 through $column {   //1,2,3,4   -  цикл по колонке
+                .#{$BP-key}#{$d--0}#{$k}{
+                    width: ($k*100)/$column*1%;
+                }
+            }
+        }@else {
+            @for $i from 1 through $column_count {  // цикл по кол-во колонок
+                $colx: nth($column,$i);  //12 or 24  - колонки
+                @for $k from 1 through $colx {   //1,2,3,4   -  цикл по колонке
+                    @if $i==1{
+                        .#{$BP-key}#{$d--0}#{$k},.#{$BP-key}#{$d--0}#{$k}-#{$colx} {
+                            width: ($k*100)/$colx*1%;
+                        }
+                    }@else {
+                        .#{$BP-key}#{$d--0}#{$k}-#{$colx} {
+                            width: ($k*100)/$colx*1%;
+                        }
+                    }
+                }
+            }
+        }
+        //==========================>прописали [вертикальное выравнивание valign]
+        .#{$BP-key}#{$d--0}#{$row_vertical}#{$d--1}b.#{$vvv} > .#{$col},.#{$BP-key}#{$d--0}#{$row_vertical}#{$d--1}b > .#{$col}{ vertical-align: bottom;}
+        .#{$BP-key}#{$d--0}#{$row_vertical}#{$d--1}t.#{$vvv} > .#{$col},.#{$BP-key}#{$d--0}#{$row_vertical}#{$d--1}t > .#{$col}{ vertical-align: top;}
+        .#{$BP-key}#{$d--0}#{$row_vertical}#{$d--1}m.#{$vvv} > .#{$col},.#{$BP-key}#{$d--0}#{$row_vertical}#{$d--1}m > .#{$col}{ vertical-align: middle;}
+
+        .#{$BP-key}#{$d--0}#{$vertical}#{$d--1}b{ vertical-align: bottom!important;}
+        .#{$BP-key}#{$d--0}#{$vertical}#{$d--1}t{ vertical-align: top!important;}
+        .#{$BP-key}#{$d--0}#{$vertical}#{$d--1}m{ vertical-align: middle!important;}
+        //==========================>прописали [сдвиги]
+        @if($column_count==1){
+            @for $k from 1 through $column {   //1,2,3,4   -  цикл по колонке
+                .#{$BP-key}#{$d--0}#{$offset_name}#{$d--1}#{$k}{
+                    margin-left: ($k*100)/$column*1%;
+                }
+                @if($k==$column){
+                    .#{$BP-key}#{$d--0}#{$offset_name}#{$d--1}0{
+                        margin-left: 0%;
+                    }
+                }
+            }
+            @for $k from 1 through $column {   //1,2,3,4   -  цикл по колонке
+                .#{$BP-key}#{$d--0}#{$push_name}#{$d--1}#{$k}{
+                    left: ($k*100)/$column*1%;
+                }
+            }
+            @for $k from 1 through $column {   //1,2,3,4   -  цикл по колонке
+                .#{$BP-key}#{$d--0}#{$pull_name}#{$d--1}#{$k}{
+                    left: -(($k*100)/$column*1%);
+                }
+            }
+        }@else {
+            @for $i from 1 through $column_count {  // цикл по кол-во колонок
+                $colx: nth($column,$i);  //12 or 24  - колонки
+                @for $k from 1 through $colx {   //1,2,3,4   -  цикл по колонке
+                    @if $i==1{
+                        .#{$BP-key}#{$d--0}#{$offset_name}#{$d--1}#{$k},.#{$BP-key}#{$d--0}#{$offset_name}#{$d--1}#{$k}-#{$colx}{
+                            margin-left: ($k*100)/$colx*1%;
+                        }
+                    }@else {
+                        .#{$BP-key}#{$d--0}#{$offset_name}#{$d--1}#{$k}-#{$colx}{
+                            margin-left: ($k*100)/$colx*1%;
+                        }
+                    }
+                }
+                @for $k from 1 through $colx {   //1,2,3,4   -  цикл по колонке
+                    @if $i==1{
+                        .#{$BP-key}#{$d--0}#{$push_name}#{$d--1}#{$k},.#{$BP-key}#{$d--0}#{$push_name}#{$d--1}#{$k}-#{$colx}{
+                            left: ($k*100)/$colx*1%;
+                        }
+                    }@else {
+                        .#{$BP-key}#{$d--0}#{$push_name}#{$d--1}#{$k}-#{$colx}{
+                            left: ($k*100)/$colx*1%;
+                        }
+                    }
+                }
+                @for $k from 1 through $colx {   //1,2,3,4   -  цикл по колонке
+                    @if $i==1{
+                        .#{$BP-key}#{$d--0}#{$pull_name}#{$d--1}#{$k},.#{$BP-key}#{$d--0}#{$pull_name}#{$d--1}#{$k}-#{$colx}{
+                            left: -(($k*100)/$colx*1%);
+                        }
+                    }@else {
+                        .#{$BP-key}#{$d--0}#{$pull_name}#{$d--1}#{$k}-#{$colx}{
+                            left: -(($k*100)/$colx*1%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+//
+//@media (min-width: 950px) {
+//==========================>прописали [gutter]
+//    .md-gutter-20>.#{$col}{padding: 0 10px;}
+//    .md-gutter-0>.#{$col}{padding: 0 0px;}
+//    .md-gutter-10>.#{$col}{padding: 0 5px;}
+//==========================>прописали [row+gutter+col]
+//    .row.md-gutter-20,.#{$row}#{$d--1}10.md-gutter-20{  margin: 0 0px;}
+//    .row.md-gutter-20>.#{$col},.#{$row}#{$d--1}10.md-gutter-20>.#{$col}{  padding: 0 10px;}
+//    .row.md-gutter-0,.#{$row}#{$d--1}10.md-gutter-0{  margin: 0 10px;}
+//    .row.md-gutter-0>.#{$col},.#{$row}#{$d--1}10.md-gutter-0>.#{$col}{  padding: 0 0px;}
+//    .row.md-gutter-10,.#{$row}#{$d--1}10.md-gutter-10{  margin: 0 5px;}
+//    .row.md-gutter-10>.#{$col},.#{$row}#{$d--1}10.md-gutter-10>.#{$col}{  padding: 0 5px;}
+//
+//    .#{$row}#{$d--1}0.md-gutter-20 {margin: 0 -10px;}
+//    .#{$row}#{$d--1}0.md-gutter-20>.#{$col}{  padding: 0 10px;}
+//    .#{$row}#{$d--1}0.md-gutter-0 {margin: 0 0;}
+//    .#{$row}#{$d--1}0.md-gutter-0>.#{$col}{  padding: 0 0px;}
+//    .#{$row}#{$d--1}0.md-gutter-10 {margin: 0 -5px;}
+//    .#{$row}#{$d--1}0.md-gutter-10>.#{$col}{  padding: 0 5px;}
+//
+//    .#{$row}#{$d--1}20.md-gutter-20 {margin: 0 10px;}
+//    .#{$row}#{$d--1}20.md-gutter-20>.#{$col}{  padding: 0 10px;}
+//    .#{$row}#{$d--1}20.md-gutter-0 {margin: 0 20px;}
+//    .#{$row}#{$d--1}20.md-gutter-0>.#{$col}{  padding: 0 0px;}
+//    .#{$row}#{$d--1}20.md-gutter-10 {margin: 0 15px;}
+//    .#{$row}#{$d--1}20.md-gutter-10>.#{$col}{  padding: 0 5px;}
+//==========================>прописали [размеры xxs-6]
+//    .xxs-6{  width: 25%;}
+//    .xxs-12{  width: 50%;}
+//==========================>прописали [вертикальное выравнивание valign]
+//    .md-row-bottom > .#{$col}{ vertical-align: bottom;}
+//    .md-row-top > .#{$col}{ vertical-align: top;}
+//    .md-row-middle > .#{$col}{ vertical-align: middle;}
+//
+//    .lg-col-bottom{ vertical-align: bottom!important;}
+//    .lg-col-top{ vertical-align: top!important;}
+//    .lg-col-middle{ vertical-align: middle!important;}
+//==========================>прописали [сдвиги]
+//    .md-offset-6{    margin-left: 25%;}
+//    .md-push-6{ left: 25%; position: relative;}
+//    .md-pull-6{ left: -25%; position: relative;}
+//}
+
+$razmery: "";   //собираюм общую строку vis-XXX
+@each $BP-key, $BP-val in $BP{
+    @if($BP-key==nth(nth($BP,1),1)){                    //первый поинт
+        $razmery: ".vis-#{$BP-key}";
+    }@else{                                             //остальные
+        $razmery: "#{$razmery}, .vis-#{$BP-key}";
+    }
+}
+#{$razmery}{
+    display: none !important
+}
+//Теперь расписываем по поинтам vis-* + hid-*
+$kk:2;
+@each $BP-key, $BP-val in $BP{
+    $checkPoint: nth($BP-val, 1); //320
+    @if($BP-key==nth(nth($BP,1),1)){        //первый поинт
+        $nextElement: nth(nth(nth($BP,$kk),2),1);     //следующий поинт
+        @media (max-width: #{$nextElement}-1px){
+            .hid-#{$BP-key} {
+                display: none !important;
+            }
+            .vis-#{$BP-key}{
+                display: block !important
+            }
+        }
+    }@elseif($BP-key==nth(nth($BP,length($BP)),1)){ //последний поинт
+        @media (min-width: #{$checkPoint}px){
+            .hid-#{$BP-key} {
+                display: none !important;
+            }
+            .vis-#{$BP-key}{
+                display: block !important
+            }
+        }
+
+    }@else{
+        $nextElement: nth(nth(nth($BP,$kk),2),1);     //следующий поинт
+        @media (max-width: #{$nextElement}-1px) and (min-width: #{$checkPoint}px){
+            .hid-#{$BP-key} {
+                display: none !important;
+                content: 'dda';
+            }
+            .vis-#{$BP-key}{
+                display: block !important
+            }
+        }
+    }
+    $kk: $kk+1;
+}
+//.vis-xxs,.vis-xs, .vis-sm, .vis-md, .vis-lg, .vis-lgg{
+//    display: none !important
+//}
+//@media (max-width: 479px){
+//    .hid-xxs {
+//        display: none !important;
+//    }
+//    .vis-xxs{
+//        display: block !important
+//    }
+//}
+//@media (max-width: 767px) and (min-width: 480px){
+//    .hid-xs {
+//        display: none !important;
+//    }
+//    .vis-xs{
+//        display: block !important
+//    }
+//}
+//@media (max-width: 949px) and (min-width: 768px){
+//    .hid-sm {
+//        display: none !important;
+//    }
+//    .vis-sm{
+//        display: block !important
+//    }
+//}
+//@media (max-width: 1139px) and (min-width: 950px){
+//    .hid-md {
+//        display: none !important;
+//    }
+//    .vis-md{
+//        display: block !important
+//    }
+//}
+//@media (max-width: 1239px) and (min-width: 1140px){
+//    .hid-lg {
+//        display: none !important;
+//    }
+//    .vis-lg{
+//        display: block !important
+//    }
+//}
+//@media (min-width: 1240px){
+//    .hid-lgg {
+//        display: none !important;
+//    }
+//    .vis-lgg{
+//        display: block !important
+//    }
+//}
+
+
+
