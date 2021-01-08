@@ -4,13 +4,10 @@ let router = Router();
 
 //получить IP для сервера
 router.get('/', async (req:Request, res:Response)=>{
-    const data = {
-        status: req.params.status || "BAD!!!!"
-    }
-    res.end(JSON.stringify(data));
+    res.end(JSON.stringify({status: "OK"}));
 });
 
 
 
 
-export const ipRouter = router;
+export const testRouter = router;

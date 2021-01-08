@@ -12,6 +12,6 @@
     "node_modules",
     "pages",
     "public",
-    "src/components"
+    "src"
   ]
 }

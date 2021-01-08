@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import React, { FC } from "react";
 import styles from './index.module.scss'
-import utilStyles from '../../src/styles/utils.module.scss'
 import Link from 'next/link'
 import { Header } from '../../src/components/Header';
 
@@ -35,7 +34,7 @@ const LayoutDefault: FC<Props> = ({ children, home }) => {
         <header className={styles.header}>
           {home ? (
             <>
-              <h1 className={utilStyles.heading2Xl}>{name}</h1>
+              <h1>{name}</h1>
             </>
           ) : (
             <>
@@ -43,14 +42,14 @@ const LayoutDefault: FC<Props> = ({ children, home }) => {
                 <a>
                   <img
                     src="/images/profile.jpg"
-                    className={`${styles.headerImage} ${utilStyles.borderCircle}`}
+                    className={`${styles.headerImage}`}
                     alt={name}
                   />
                 </a>
               </Link>
-              <h2 className={utilStyles.headingLg}>
+              <h2>
                 <Link href="/">
-                  <a className={utilStyles.colorInherit}>{name}</a>
+                  <a >{name}</a>
                 </Link>
               </h2>
             </>

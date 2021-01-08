@@ -20,12 +20,10 @@
     "pages/**/*.tsx",
     "public/**/*.tsx",
     "layouts/**/*.tsx",
-    "src/components/**/*.tsx",
     "src/**/*.tsx",
     "pages/**/*.ts",
     "public/**/*.ts",
     "layouts/**/*.ts",
-    "src/components/**/*.ts",
     "src/**/*.ts"
   ],
   "exclude": ["node_modules"]
