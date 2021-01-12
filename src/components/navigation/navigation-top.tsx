@@ -25,6 +25,9 @@ const NavigationTop:FC<Props> = (props) => {
         <Link href="/signup">
           <a>SIGNUP</a>
         </Link>
+        <Link href="/poligon">
+          <a>POLIGON</a>
+        </Link>
       </div>
       <div className={styled.center}>
         {/*center*/}

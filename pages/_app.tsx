@@ -3,19 +3,64 @@ import '../src/assets/scss/global.scss';
 
 import { ThemeProvider } from "theme-ui";
 import theme from "../src/theme-ui";
-import { useState } from 'react';
-import { maps } from '../test/test';
-import MainContext from '../src/context/mainContext/mainContext';
+import { useContext, useEffect, useState } from 'react';
+import MainContext, { mainContext } from '../src/context/mainContext/mainContext';
+import { NextPageContext } from 'next';
+
+export interface BIGPROPS {
+  isServer: boolean
+  auth: boolean
+}
+
+export interface MyNextPageContext extends NextPageContext{
+  isServer: boolean
+  auth: boolean
+}
 
 function MyApp({Component, pageProps}: AppProps) {
-  const [state, setState] = useState(maps)
   return (
     <ThemeProvider theme={theme}>
       <MainContext>
-        <Component {...pageProps} />
+        <mainContext.Consumer>
+          {(ctx)=>{
+            if(pageProps.isServer && ctx.state.auth === null){
+              ctx.state.auth = pageProps.auth;
+              // ctx.setAuth(pageProps.auth)
+            }{
+              pageProps.auth = ctx.state.auth;
+            }
+            const auth = pageProps.isServer ? pageProps.auth: ctx.state.auth;
+            AUTH.auth = auth;
+            return <Component {...pageProps} isServer={pageProps.isServer} auth={auth}/>
+          }}
+        </mainContext.Consumer>
       </MainContext>
     </ThemeProvider>
   );
 }
 
 export default MyApp;
+
+export const AUTH = {
+  auth: false,
+}
+
+MyApp.getInitialProps = async ({ Component, ctx }) => {
+  ctx.isServer = typeof window === 'undefined';
+  ctx.auth = false;
+  if(ctx.isServer){
+    ctx.auth = false;
+    console.log('REQUEST')
+  }else{
+    ctx.auth = AUTH.auth;
+  }
+  return {
+    pageProps: {
+      ...(Component.getInitialProps
+        ? await Component.getInitialProps(ctx)
+        : {}),
+      isServer: ctx.isServer,
+      auth: ctx.auth,
+    }
+  }
+}
