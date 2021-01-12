@@ -17,15 +17,22 @@ router.get('/test', requireAuth, async (req:Request, res:Response)=>{
 Авторизация под пользователем
  */
 router.post('/signin', async (req:Request, res:Response)=>{
-    const email = req.body.email;
-    const password = req.body.password;
-    if(false){
+    const email = ""+req.body.email;
+    const password = ""+req.body.password;
+    if(email === undefined || password === undefined){
         res.status(404).json({
-            msg: "нету такого пользователя в системе"
+            msg: "вы передали не все данные"
+        })
+        return;
+    }
+    //поиск нужного пользователя
+    if(userDB.email != email){
+        res.status(404).json({
+            msg: "такого пользователя нету"
         })
     }
     //проверяем - тот ли пароль что в БД для этого пользователя
-    const compare = bcryptjs.compareSync(password, userDB.pw)
+    const compare = await bcryptjs.compareSync(password, userDB.pw)
     if(compare){
         const token = jwt.sign({
             email, zak: true

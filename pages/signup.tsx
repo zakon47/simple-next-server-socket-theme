@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import LayoutDefault from '../layouts/LayoutDefault/LayoutDefault';
 import MyButton from '../src/components/button/my-button';
+import LayoutMain from '../layouts/LayoutMain/LayoutMain';
 
 export const Home: FC = () => {
   return (
-    <LayoutDefault home>
+    <LayoutMain>
       <MyButton label="презаголовок">Продолжение</MyButton>
-    </LayoutDefault>
+    </LayoutMain>
   );
 };
 

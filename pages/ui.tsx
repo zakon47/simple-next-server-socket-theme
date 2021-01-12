@@ -1,17 +1,26 @@
 import Head from 'next/head'
-import LayoutDefault, {siteTitle } from '../layouts/LayoutDefault/LayoutDefault'
-import { getSortedPostsData } from '../src/lib/posts'
+import {siteTitle } from '../layouts/LayoutDefault/LayoutDefault'
 import Link from 'next/link'
 import Date from '../src/components/date'
+import { maps } from '../test/test';
+import React from 'react';
+import LayoutMain from '../layouts/LayoutMain/LayoutMain';
+import withAuth from '../src/HOC/withAuth';
 
-export default function Home({ allPostsData }) {
+interface IProps {
+  allPostsData: Array<any>
+  maps: typeof maps;
+}
+const Ui = (props: IProps) => {
+  const {allPostsData, maps} = props;
   return (
-    <LayoutDefault home>
+    <LayoutMain>
       <Head>
         <title>{siteTitle}!</title>
       </Head>
       <section>
         <h2>Привет</h2>
+        <div>maps: {JSON.stringify(maps, null, 2)}</div>
         <ul className='zakosha'>
           <li>Lorem ipsum dolor sit amet.</li>
           <li className='-active'>Lorem ipsum dolor sit amet.</li>
@@ -40,15 +49,23 @@ export default function Home({ allPostsData }) {
           ))}
         </ul>
       </section>
-    </LayoutDefault>
+    </LayoutMain>
   )
 }
+export default withAuth(Ui);
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData()
+  // const allPostsData = getSortedPostsData()
+  if(maps['ui']===undefined){
+    maps['ui'] = 0;
+  }else{
+    maps['ui'] += 1;
+  }
+  console.log(111, maps)
   return {
-    props: {
-      allPostsData
+    props:{
+      allPostsData: [],
+      maps,
     }
   }
 }

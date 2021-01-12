@@ -8,26 +8,31 @@ interface IProps {
 
 const FormSignup: FC<IProps> = (props) => {
   const {} = props;
-  const onSubmit = (d) => {
-    console.log(11, d)
+  const onSubmit = async (d) => {
+    const data = await fetch("http://localhost:3100/api/auth/signin",{
+      method: "POST",
+      body: JSON.stringify(d)
+    })
+    const JS = await data.json();
+    console.log(11, d, JS);
   }
   return (
     <Form
       onSubmit={onSubmit}
       validate={values => {
         const errors:any = {}
-        if (!values.lastName) {
-          errors.lastName = 'Required!'
+        if (!values.password) {
+          errors.password = 'Required!'
         }
         return errors
       }}
       render={({handleSubmit, submitting, pristine, form, values}) => {
         return (
           <>
-            <div><Field component="input" name="name" placeholder="введите имя"/></div>
+            <div><Field component="input" name="email" placeholder="введите имя"/></div>
             <br/>
             <div>
-              <Field name="lastName">
+              <Field name="password">
                 {({input, meta}) => (
                   <>
                     <input {...input} type='text' placeholder="введите фамилию"/>

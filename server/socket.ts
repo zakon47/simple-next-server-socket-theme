@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import {ESocketTypeMessage} from "./share-types/type-socket";
+import {ESocketTypeMessage} from "../share-types/type-socket";
 
 export const serverSocket = function(socket:Socket) {
   // if(!socket)

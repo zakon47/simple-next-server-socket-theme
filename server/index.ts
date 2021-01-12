@@ -7,6 +7,8 @@ import {Server as ServerHTTP} from "http";
 import * as http from "http";
 import {Server} from 'socket.io';
 import {serverSocket} from "./socket";
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' })         //папка куда будем загружать файлы
 
 require('dotenv').config();
 
@@ -54,8 +56,9 @@ export let SOCKET:Server;
         SOCKET.on('connection', serverSocket);
 
         //EXPRESS
+        server.use(express.urlencoded({ extended: false }))
         server.use(express.json())
-        server.use(express.urlencoded({ extended: true }))
+        server.use(upload.none())
         server.use('/api', testRouter);
         server.use('/api/auth', authRouter);
 
