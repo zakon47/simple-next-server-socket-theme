@@ -1,10 +1,10 @@
 import Head from 'next/head'
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
-import { BIGPROPS, MyNextPageContext } from './_app';
+import { MainIProps, MainNextPageContext } from './_app';
 import { mainContext } from '../src/context/mainContext/mainContext';
 
-interface IProps extends BIGPROPS{
+interface IProps extends MainIProps{
   list: Array<number>
 }
 
@@ -36,7 +36,7 @@ const Poligon = (props:IProps) => {
 }
 export default Poligon;
 
-Poligon.getInitialProps = async (ctx:MyNextPageContext) => {
+Poligon.getInitialProps = async (ctx:MainNextPageContext) => {
   console.log("AUTH", ctx.auth, ctx.isServer)
   return {
     name: 'zakon',

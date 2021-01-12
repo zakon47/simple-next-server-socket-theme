@@ -3,16 +3,15 @@ import '../src/assets/scss/global.scss';
 
 import { ThemeProvider } from "theme-ui";
 import theme from "../src/theme-ui";
-import { useContext, useEffect, useState } from 'react';
 import MainContext, { mainContext } from '../src/context/mainContext/mainContext';
 import { NextPageContext } from 'next';
 
-export interface BIGPROPS {
+export interface MainIProps {
   isServer: boolean
   auth: boolean
 }
 
-export interface MyNextPageContext extends NextPageContext{
+export interface MainNextPageContext extends NextPageContext{
   isServer: boolean
   auth: boolean
 }
@@ -25,7 +24,6 @@ function MyApp({Component, pageProps}: AppProps) {
           {(ctx)=>{
             if(pageProps.isServer && ctx.state.auth === null){
               ctx.state.auth = pageProps.auth;
-              // ctx.setAuth(pageProps.auth)
             }{
               pageProps.auth = ctx.state.auth;
             }
@@ -49,18 +47,17 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
   ctx.isServer = typeof window === 'undefined';
   ctx.auth = false;
   if(ctx.isServer){
-    ctx.auth = false;
     console.log('REQUEST')
   }else{
     ctx.auth = AUTH.auth;
   }
   return {
     pageProps: {
+      isServer: ctx.isServer,
+      auth: ctx.auth,
       ...(Component.getInitialProps
         ? await Component.getInitialProps(ctx)
         : {}),
-      isServer: ctx.isServer,
-      auth: ctx.auth,
     }
   }
 }
