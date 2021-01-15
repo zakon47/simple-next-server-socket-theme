@@ -7,6 +7,7 @@ interface IState{
   name: string
   list: Array<number>
   cookie: string
+  redirect: string
 }
 interface IContext {
   state: IState
@@ -21,7 +22,8 @@ function MainContext(props){
     auth: null,
     name: "zakon",
     list: [0,1,2,3],
-    cookie: ''
+    cookie: '',
+    redirect: ''
   })
   const singIn = () => {
     setState({...state, list: [...state.list, state.list.length]})

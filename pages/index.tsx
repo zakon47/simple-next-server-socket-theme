@@ -22,8 +22,6 @@ const Index = (props: IProps) => {
   const {comments = [], maps} = props;
   return (
     <LayoutMain>
-      <FormSignup/>
-
       <div>НАЙДЕНО: {comments.length} <small>записей</small></div>
       <div>maps: {JSON.stringify(maps, null, 2)}</div>
       <b>STATE: {JSON.stringify(state, null, 2)}</b>

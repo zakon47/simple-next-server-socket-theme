@@ -1,10 +1,11 @@
-import { AppProps /*, AppContext */ } from "next/app";
+import { AppProps } from "next/app";
 import '../src/assets/scss/global.scss';
 
 import { ThemeProvider } from "theme-ui";
 import theme from "../src/theme-ui";
 import MainContext, { mainContext } from '../src/context/mainContext/mainContext';
 import { NextPageContext } from 'next';
+import Router from 'next/router';
 
 export interface MainIProps {
   isServer: boolean
@@ -13,6 +14,7 @@ export interface MainIProps {
 
 export interface MainNextPageContext extends NextPageContext{
   isServer: boolean
+  redirect: (path: string)=>void
   auth: boolean
 }
 
@@ -44,10 +46,19 @@ export const AUTH = {
 }
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {
-  ctx.isServer = typeof window === 'undefined';
-  ctx.auth = false;
+  const redirect = (path: string)=>{
+    ctx.isServer
+      ? ctx.res.writeHead(302, { Location: path }).end()
+      : Router.push(path)
+    return;
+  }
+  ctx = { ...ctx,
+    isServer: typeof window === 'undefined',
+    auth: false,
+    redirect
+  }
   if(ctx.isServer){
-    console.log('REQUEST')
+    // console.log('REQUEST')
   }else{
     ctx.auth = AUTH.auth;
   }
