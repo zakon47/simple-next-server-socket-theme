@@ -15,3 +15,8 @@ if (!ENV.DB_USER) throw new Error("pls SET env:DB_USER")
 if (!ENV.HOST1) throw new Error("pls SET env:HOST1")
 if (!ENV.HOST2) throw new Error("pls SET env:HOST2")
 export {ENV}
+
+
+
+
+export const prefixLocalStorage = "ui_"

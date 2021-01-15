@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
-import FormSignup from '../src/components/forms/form-signup/form-signup';
-import { maps } from '../test/test';
 import { mainContext } from '../src/context/mainContext/mainContext';
 
 type Element = {
@@ -14,16 +12,14 @@ type Element = {
 
 interface IProps {
   comments: Array<Element>
-  maps: typeof maps;
 }
 
 const Index = (props: IProps) => {
   const {state, singIn} = useContext(mainContext);
-  const {comments = [], maps} = props;
+  const {comments = []} = props;
   return (
     <LayoutMain>
       <div>НАЙДЕНО: {comments.length} <small>записей</small></div>
-      <div>maps: {JSON.stringify(maps, null, 2)}</div>
       <b>STATE: {JSON.stringify(state, null, 2)}</b>
       <button onClick={singIn}>ADD</button>
       <hr/>

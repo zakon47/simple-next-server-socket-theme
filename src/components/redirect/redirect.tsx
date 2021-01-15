@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { mainContext } from '../../context/mainContext/mainContext';
 import styled from './index.module.scss';
 import { isObject } from '../../utils/alias';
+import { prefixLocalStorage } from '../../../shared/const';
 
 interface IProps {
   href: string
   children: ReactNode
 }
 
-const prefixLocalStorage = "ui_"
 /*
 Create a Redirect component with record in mainContext
  */

@@ -14,19 +14,10 @@ const NavigationTop:FC<Props> = (props) => {
     <div className={styled.wrap}>
       <div className={styled.left}>
         <Link href="/">
-          <a>3AK</a>
-        </Link>
-        <Link href="/ui">
-          <a>UI</a>
-        </Link>
-        <Link href="/pricing">
-          <a>PRICING</a>
-        </Link>
-        <Link href="/signup">
-          <a>SIGNUP</a>
+          <a>Home</a>
         </Link>
         <Link href="/poligon">
-          <a>POLIGON</a>
+          <a>Sprites</a>
         </Link>
         <Link href="/redirect">
           <a>Redirect</a>
@@ -36,6 +27,9 @@ const NavigationTop:FC<Props> = (props) => {
         {/*center*/}
       </div>
       <div className={styled.right}>
+        <Link href="/login">
+          <a>Login</a>
+        </Link>
         <MyButton
           onClick={()=> setColorMode(colorMode == 'default' ? 'dart' : 'default')}
         >{colorMode == 'default' ? 'dart' : 'default'}
