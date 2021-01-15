@@ -1,5 +1,6 @@
 import { AppProps } from "next/app";
 import '../src/assets/scss/global.scss';
+import '../src/assets/scss/sprite/sprite-color.scss';
 
 import { ThemeProvider } from "theme-ui";
 import theme from "../src/theme-ui";
