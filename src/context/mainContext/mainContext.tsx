@@ -3,11 +3,14 @@ import { createContext, Dispatch, useState } from 'react';
 export let mainContext = createContext<IContext>({} as IContext)
 
 interface IState{
-  auth: boolean|null
+  ctx:{
+    auth: boolean|null
+    isServer: boolean|null
+  }
   name: string
-  list: Array<number>
   cookie: string
   redirect: string
+  list: Array<number>
 }
 interface IContext {
   state: IState
@@ -19,7 +22,10 @@ interface IContext {
 
 function MainContext(props){
   const [state, setState] = useState<IState>({
-    auth: null,
+    ctx:{
+      auth: null,
+      isServer: null
+    },
     name: "zakon",
     list: [0,1,2,3],
     cookie: '',
@@ -29,7 +35,7 @@ function MainContext(props){
     setState({...state, list: [...state.list, state.list.length]})
   }
   const setAuth = (status: boolean) => {
-    setState({...state, auth: status})
+    setState({...state, ctx:{...state.ctx, auth: status} })
   }
   const saveCookie = (cookie:string) => {
     setState({...state, cookie})

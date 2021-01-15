@@ -8,12 +8,12 @@ interface IProps extends MainIProps{
   list: Array<number>
 }
 
-const Poligon = (props:IProps) => {
+const Auth = (props:IProps) => {
   const {state, setAuth} = useContext(mainContext)
-  console.log('POLIGON', props.auth, props.auth, "===STATE====", state.auth)
+  console.log('POLIGON', props.auth, props.auth, "===STATE====", state.ctx.auth)
   const {auth, list} = props;
   const BUTTON = () => {
-    setAuth(!state.auth);
+    setAuth(!state.ctx.auth);
   }
   return (
     <LayoutMain>
@@ -29,14 +29,14 @@ const Poligon = (props:IProps) => {
             {list.map(elem=><li key={elem}>{elem}</li>)}
           </ul>
         )}
-        <button onClick={BUTTON}>{state.auth ? "HIDE" : "SHOW"}</button>
+        <button onClick={BUTTON}>{state.ctx.auth ? "HIDE" : "SHOW"}</button>
       </div>
     </LayoutMain>
   )
 }
-export default Poligon;
+export default Auth;
 
-Poligon.getInitialProps = async (ctx:MainNextPageContext) => {
+Auth.getInitialProps = async (ctx:MainNextPageContext) => {
   console.log("AUTH", ctx.auth, ctx.isServer)
   return {
     name: 'zakon',

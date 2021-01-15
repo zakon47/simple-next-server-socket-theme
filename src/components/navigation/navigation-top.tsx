@@ -8,7 +8,6 @@ interface Props{
 }
 
 const NavigationTop:FC<Props> = (props) => {
-  const {children, ...nextProps} = props;
   const [colorMode, setColorMode] = useColorMode()
   return (
     <div className={styled.wrap}>
@@ -16,20 +15,21 @@ const NavigationTop:FC<Props> = (props) => {
         <Link href="/">
           <a>Home</a>
         </Link>
-        <Link href="/poligon">
-          <a>Sprites</a>
+        <Link href="/auth">
+          <a>Auth</a>
         </Link>
         <Link href="/redirect">
           <a>Redirect</a>
         </Link>
       </div>
-      <div className={styled.center}>
-        {/*center*/}
-      </div>
+      {/*<div className={styled.center}>*/}
+      {/*  center*/}
+      {/*</div>*/}
       <div className={styled.right}>
         <Link href="/login">
           <a>Login</a>
         </Link>
+        &nbsp;
         <MyButton
           onClick={()=> setColorMode(colorMode == 'default' ? 'dart' : 'default')}
         >{colorMode == 'default' ? 'dart' : 'default'}

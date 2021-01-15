@@ -20,7 +20,7 @@ const Index = (props: IProps) => {
   return (
     <LayoutMain>
       <div>НАЙДЕНО: {comments.length} <small>записей</small></div>
-      <b>STATE: {JSON.stringify(state, null, 2)}</b>
+      <div>STATE: <pre>{JSON.stringify(state, null, 2)}</pre></div>
       <button onClick={singIn}>ADD</button>
       <hr/>
       {comments && comments.map(elem => (
@@ -35,6 +35,7 @@ const Index = (props: IProps) => {
 export default Index;
 
 Index.getInitialProps = (ctx) => {
+  console.log(33, ctx)
   return {
     comments: [],
     maps: {}

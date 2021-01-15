@@ -24,13 +24,14 @@ function MyApp({Component, pageProps}: AppProps) {
     <ThemeProvider theme={theme}>
       <MainContext>
         <mainContext.Consumer>
-          {(ctx)=>{
-            if(pageProps.isServer && ctx.state.auth === null){
-              ctx.state.auth = pageProps.auth;
+          {(myContext)=>{
+            if(pageProps.isServer && myContext.state.ctx.auth === null){
+              myContext.state.ctx.auth = pageProps.auth;
             }{
-              pageProps.auth = ctx.state.auth;
+              pageProps.auth = myContext.state.ctx.auth;
             }
-            const auth = pageProps.isServer ? pageProps.auth: ctx.state.auth;
+            myContext.state.ctx.isServer = pageProps.isServer
+            const auth = pageProps.isServer ? pageProps.auth: myContext.state.ctx.auth;
             AUTH.auth = auth;
             return <Component {...pageProps} isServer={pageProps.isServer} auth={auth}/>
           }}

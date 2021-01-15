@@ -1,11 +1,12 @@
-import React from 'react';
-import LayoutMain from '../layouts/LayoutMain/LayoutMain';
+import React  from 'react';
 import { MainIProps, MainNextPageContext } from './_app';
 import Head from 'next/head';
 import Link from 'next/link';
-import Redirect from '../src/components/redirect/redirect';
+import LayoutMain from 'layouts/LayoutMain/LayoutMain';
+import Redirect from 'src/components/redirect/redirect';
 
 interface IProps extends MainIProps{
+  ctx?: MainNextPageContext
 }
 
 const RedirectPage = (props: IProps) => {
@@ -19,21 +20,21 @@ const RedirectPage = (props: IProps) => {
       ): (
         <div>
           <h1>Вам нужно зарегистрироваться!</h1>
-          <div>
-            <Redirect href="/signup">
-              xaxaxa
-            </Redirect>
-          </div>
+          {/*<div>*/}
+          {/*  <Redirect href="/signup" >*/}
+          {/*    xaxaxa*/}
+          {/*  </Redirect>*/}
+          {/*</div>*/}
           <div>
             <Redirect href="/login">
               <a><span>Зарегистрироваться</span></a>
             </Redirect>
           </div>
-          <div>
-            <Redirect href="/login222">
-              <span>Зарегистрироваться</span>
-            </Redirect>
-          </div>
+          {/*<div>*/}
+          {/*  <Redirect href="/login222">*/}
+          {/*    <span>Зарегистрироваться</span>*/}
+          {/*  </Redirect>*/}
+          {/*</div>*/}
           <Link href="/login">
             <b>dsd</b>
           </Link>
@@ -45,6 +46,12 @@ const RedirectPage = (props: IProps) => {
 
 export default RedirectPage;
 
-RedirectPage.getInitialProps = async (ctx: MainNextPageContext) => {
-  return {}
+// RedirectPage.getInitialProps = async (ctx: MainNextPageContext) => {
+//   return {ctx}
+// }
+
+RedirectPage.getInitialProps = (ctx) => {
+  console.log(33, ctx)
+  return {
+  }
 }
