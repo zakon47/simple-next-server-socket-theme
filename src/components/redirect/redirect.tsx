@@ -17,16 +17,16 @@ interface IProps {
 Create a Redirect component with record in mainContext
  */
 const Redirect = (props: IProps) => {
-  const Route = useRouter()
+  const route = useRouter()
   const {state, setState} = useContext(mainContext)
   const handleClick = (e) => {
     e.preventDefault()
-    localStorage.setItem(`redirect`, props.href)
+    localStorage.setItem('redirect', props.href)
     console.log(222, state.ctx)
     setState({...state, redirect: props.href})
-    Route.push(props.href)
+    route.push(props.href)
   }
-  console.log(11, props.ctx)
+  console.log(11, props.ctx, route)
   return (
     <>
       {React.Children.map(props.children, (child, index) => {
