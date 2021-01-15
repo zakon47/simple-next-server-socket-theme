@@ -1,0 +1,64 @@
+%svg-common {
+	background: url("../../_sprites/sprite-color.svg") no-repeat;
+}
+
+.svg-icon_crack {
+	@extend %svg-common;
+	background-position: 27.63225475089882% 79.52522255192878%;
+}
+
+.svg-icon_crack-dims {
+	width: 29.3px;
+	height: 27.2px;
+}
+
+.svg-icon_fire_house {
+	@extend %svg-common;
+	background-position: 0 0;
+}
+
+.svg-icon_fire_house-dims {
+	width: 133.5px;
+	height: 107.2px;
+}
+
+.svg-icon_robot {
+	@extend %svg-common;
+	background-position: 99.33035714285714% 0;
+}
+
+.svg-icon_robot-dims {
+	width: 89.6px;
+	height: 98.1px;
+}
+
+.svg-icon_star {
+	@extend %svg-common;
+	background-position: 40.26162790697674% 75.33380182712578%;
+}
+
+.svg-icon_star-dims {
+	width: 17.6px;
+	height: 19.7px;
+}
+
+.svg-icon_star_none {
+	@extend %svg-common;
+	background-position: 48.78875968992247% 75.33380182712578%;
+}
+
+.svg-icon_star_none-dims {
+	width: 17.6px;
+	height: 19.7px;
+}
+
+.svg-icon_work {
+	@extend %svg-common;
+	background-position: 0 99.90680335507922%;
+}
+
+.svg-icon_work-dims {
+	width: 53.8px;
+	height: 54.7px;
+}
+
