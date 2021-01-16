@@ -3,14 +3,11 @@ import { useRouter } from 'next/router';
 import { mainContext } from '../../context/mainContext/mainContext';
 import styled from './index.module.scss';
 import { isObject } from '../../utils/alias';
-import { prefixLocalStorage } from '../../../shared/const';
-import { MainNextPageContext } from '../../../pages/_app';
-import RedirectPage from '../../../pages/redirect';
 
 interface IProps {
   href: string
   children: ReactNode
-  ctx?: MainNextPageContext
+  ctx?
 }
 
 /*
@@ -22,11 +19,9 @@ const Redirect = (props: IProps) => {
   const handleClick = (e) => {
     e.preventDefault()
     localStorage.setItem('redirect', props.href)
-    console.log(222, state.ctx)
     setState({...state, redirect: props.href})
     route.push(props.href)
   }
-  console.log(11, props.ctx, route)
   return (
     <>
       {React.Children.map(props.children, (child, index) => {
@@ -54,15 +49,3 @@ const Redirect = (props: IProps) => {
 };
 
 export default Redirect;
-
-// Redirect.getInitialProps = async (ctx: MainNextPageContext) => {
-//   console.log(33, ctx)
-//   return {
-//     ctx
-//   }
-// }
-Redirect.getInitialProps = (ctx) => {
-  console.log(44, ctx)
-  return {
-  }
-}

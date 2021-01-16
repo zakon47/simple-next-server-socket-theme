@@ -1,4 +1,7 @@
 require('dotenv').config();
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+    enabled: process.env.ANALYZE === "true",
+});
 const withMDX = require("@next/mdx")();
 
 const mode = 'dev';
@@ -46,4 +49,4 @@ const DATA = {
     pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
     ...ENV
 }
-module.exports = withMDX(DATA);
+module.exports = withBundleAnalyzer(withMDX(DATA));

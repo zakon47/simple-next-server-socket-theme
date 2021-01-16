@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "simple-next-server-socket-theme",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "author": "3AK <zakon47@gmail.com>",
   "license": "MIT",
@@ -16,10 +16,14 @@
     "start": "cross-env NODE_ENV=production HOST1=http://localhost:3300 node dist/index.js",
     "prod": "concurrently --restart-tries=100 \"npm run start\"",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "analyze": "cross-env ANALYZE=true npm run build:next",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@next/bundle-analyzer": "^10.0.5",
     "@storybook/addon-actions": "^6.1.11",
     "@storybook/addon-controls": "^6.1.11",
     "@storybook/addon-essentials": "^6.1.11",

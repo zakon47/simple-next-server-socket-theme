@@ -3,11 +3,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import data from '../../src/data.json';
-import {MainIProps} from "../_app";
+import {initialize} from "../_app";
 
-interface IProps extends MainIProps{}
+interface IProps{
+    auth:boolean
+}
 
-const BlogId:React.FC<IProps> = ({children, auth}) => {
+const BlogId = ({children, auth}) => {
     const route = useRouter();
     const post = data[route.query.id as string];
 
@@ -31,3 +33,11 @@ const BlogId:React.FC<IProps> = ({children, auth}) => {
 };
 
 export default BlogId;
+
+BlogId.getInitialProps = async (ctx) => {
+    // const moment = (await import("classnames")).default();
+    const {auth} = await initialize(ctx)
+    return {
+        auth
+    }
+}
