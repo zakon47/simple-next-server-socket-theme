@@ -1,16 +1,9 @@
 import { createContext, Dispatch, ReactNode, useEffect, useState } from 'react';
-import { AUTH } from '../../../pages/_app';
+import { AUTH, MainProps } from '../../../pages/_app';
 
 export let mainContext = createContext<IContext>({} as IContext)
 
-interface IServiceData {
-  auth: boolean | null
-  isServer: boolean | null
-  referer: string
-}
-
-interface IState {
-  ctx: IServiceData
+interface IState extends MainProps{
   name: string
   cookie: string
   redirect: string
@@ -23,6 +16,8 @@ interface IContext {
   singIn: () => void
   saveCookie: (cookie: string) => void
   setAuth: (status: boolean) => void
+  setIsLoading: (status: boolean) => void
+  setReferer: (referer: string) => void
 }
 
 interface IProps {
@@ -32,7 +27,7 @@ interface IProps {
 
 function MainContext(props: IProps) {
   const [state, setState] = useState<IState>({
-    ctx: props.ctx,
+    AUTH: props.ctx,
     name: "zakon",
     list: [0, 1, 2, 3],
     cookie: '',
@@ -43,7 +38,15 @@ function MainContext(props: IProps) {
   }
   const setAuth = (status: boolean) => {
     AUTH.auth = status
-    setState({...state, ctx: {...state.ctx, auth: status}})
+    setState({...state, AUTH: {...state.AUTH, auth: status}})
+  }
+  const setIsLoading = (status: boolean) => {
+    AUTH.isLoading = status
+    setState({...state, AUTH: {...state.AUTH, isLoading: status}})
+  }
+  const setReferer = (referer: string) => {
+    AUTH.referer = referer
+    setState({...state, AUTH: {...state.AUTH, referer}})
   }
   const saveCookie = (cookie: string) => {
     setState({...state, cookie})
@@ -53,7 +56,9 @@ function MainContext(props: IProps) {
     setState,
     singIn,
     saveCookie,
-    setAuth
+    setAuth,
+    setIsLoading,
+    setReferer
   }
   return (
     <mainContext.Provider value={data}>

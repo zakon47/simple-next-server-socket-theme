@@ -12,17 +12,17 @@ interface IProps extends MainProps{
 const Auth = (props: IProps) => {
   const {state, setAuth} = useContext(mainContext)
   const BUTTON = () => {
-    setAuth(!state.ctx.auth);
+    setAuth(!state.AUTH.auth);
   }
   return (
-    <LayoutMain>
+    <LayoutMain >
       <Head>
         <title>CheckAuth</title>
       </Head>
       <div>
-        {state.ctx.auth ? "SECRET SHOW" : "REGISTER!"}
+        {state.AUTH.auth ? "SECRET SHOW" : "REGISTER!"}
         <TestComponent {...props}/>
-        <button onClick={BUTTON} style={{color: 'black'}}>{state.ctx.auth ? "HIDE" : "SHOW"}</button>
+        <button onClick={BUTTON} style={{color: 'black'}}>{state.AUTH.auth ? "HIDE" : "SHOW"}</button>
         <hr/>
         <div>STATE: <pre>{JSON.stringify(state, null, 2)}</pre></div>
       </div>
@@ -34,6 +34,5 @@ export default Auth;
 
 
 Auth.getInitialProps = async (ctx: MainNextPageContext) => {
-  console.log(2, ctx.AUTH)
   return {}
 }

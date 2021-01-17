@@ -35,7 +35,7 @@
     "@types/lodash": "^4.14.167",
     "@types/multer": "^1.4.5",
     "@types/next": "^9.0.0",
-    "@types/node": "^14.14.12",
+    "@types/node": "^14.14.21",
     "@types/pg": "^7.14.7",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
