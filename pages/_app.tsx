@@ -4,38 +4,27 @@ import '../src/assets/scss/sprite/sprite-color.scss';
 
 import { ThemeProvider } from "theme-ui";
 import theme from "../src/theme-ui";
-import MainContext, { mainContext } from '../src/context/mainContext/mainContext';
-import { NextPageContext } from 'next';
-import Router from 'next/router';
-
-export interface MainIProps {
-  isServer: boolean
-  auth: boolean
-}
-
-export interface MainNextPageContext extends NextPageContext{
-  isServer: boolean
-  redirect: (path: string)=>void
-  auth: boolean
-}
+import MainContext from '../src/context/mainContext/mainContext';
+import { useRouter } from 'next/router';
+import {useEffect} from "react";
+import {EVENTS, IData} from "../src/context/events";
+import {isServer} from "../src/utils/routing";
 
 function MyApp({Component, pageProps}: AppProps) {
+  const router = useRouter()
+  useEffect(()=>{
+    const handleEventStart = (event, req)=>{
+      EVENTS.setReferer(event)
+    }
+    router.events.on("routeChangeStart", handleEventStart);
+    return ()=>{
+      router.events.off("routeChangeStart", handleEventStart)
+    }
+  },[])
   return (
     <ThemeProvider theme={theme}>
       <MainContext>
-        <mainContext.Consumer>
-          {(myContext)=>{
-            if(pageProps.isServer && myContext.state.ctx.auth === null){
-              myContext.state.ctx.auth = pageProps.auth;
-            }{
-              pageProps.auth = myContext.state.ctx.auth;
-            }
-            myContext.state.ctx.isServer = pageProps.isServer
-            const auth = pageProps.isServer ? pageProps.auth: myContext.state.ctx.auth;
-            AUTH.auth = auth;
-            return <Component {...pageProps} isServer={pageProps.isServer} auth={auth}/>
-          }}
-        </mainContext.Consumer>
+        <Component {...pageProps}/>
       </MainContext>
     </ThemeProvider>
   );
@@ -43,34 +32,44 @@ function MyApp({Component, pageProps}: AppProps) {
 
 export default MyApp;
 
-export const AUTH = {
-  auth: false,
-}
-
 MyApp.getInitialProps = async ({ Component, ctx }) => {
-  const redirect = (path: string)=>{
-    ctx.isServer
-      ? ctx.res.writeHead(302, { Location: path }).end()
-      : Router.push(path)
-    return;
-  }
+  // const redirect = (path: string)=>{
+  //   ctx.isServer
+  //     ? ctx.res.writeHead(302, { Location: path }).end()
+  //     : Router.push(path)
+  //   return;
+  // }
   ctx = { ...ctx,
-    isServer: typeof window === 'undefined',
-    auth: false,
-    redirect
+    isServer: isServer(),
+    auth: true,
   }
-  if(ctx.isServer){
-    // console.log('REQUEST')
-  }else{
-    ctx.auth = AUTH.auth;
-  }
+  // if(ctx.isServer){
+  //   // console.log('REQUEST')
+  //   // EVENTS.setAuth(ctx.auth)
+  //   EVENTS.set(ctx)
+  // }
   return {
     pageProps: {
       isServer: ctx.isServer,
-      auth: ctx.auth,
+      auth: !ctx.isServer,
       ...(Component.getInitialProps
         ? await Component.getInitialProps(ctx)
         : {}),
     }
   }
+}
+
+
+export const initialize = async (ctx):Promise<IData> => {
+  const context:IData = {
+    isServer: isServer(),
+    auth: false,
+    from: ''
+  }
+  if(ctx.isServer){
+    // console.log('REQUEST')
+    // EVENTS.setAuth(ctx.auth)
+    EVENTS.set(ctx)
+  }
+  return context
 }

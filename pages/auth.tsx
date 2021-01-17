@@ -1,27 +1,38 @@
 import Head from 'next/head'
-import React, { useContext } from 'react';
+import React, {useContext, useMemo, useRef} from 'react';
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
-import { MainIProps, MainNextPageContext } from './_app';
-import { mainContext } from '../src/context/mainContext/mainContext';
+import {mainContext} from '../src/context/mainContext/mainContext';
+import {EVENTS} from "../src/context/events";
+import {initialize} from "./_app";
 
-interface IProps extends MainIProps{
+interface IProps{
+  auth: boolean
+  isServer: boolean
   list: Array<number>
 }
 
 const Auth = (props:IProps) => {
   const {state, setAuth} = useContext(mainContext)
-  console.log('POLIGON', props.auth, props.auth, "===STATE====", state.ctx.auth)
-  const {auth, list} = props;
+  const {list} = props;
+  console.log(44, state.ctx, props)
   const BUTTON = () => {
-    setAuth(!state.ctx.auth);
+    EVENTS.setAuth(!state.ctx.auth)
+    // defaultContext.auth = !defaultContext.auth
+    // setAuth(!state.ctx.auth);
   }
+  const auth = useMemo(()=>{
+    return state.ctx.auth
+  },[state.ctx.auth])
+  const isServer = useMemo(()=>{
+    return state.ctx.isServer
+  },[state.ctx.isServer])
   return (
     <LayoutMain>
       <Head>
         <title>POLIGON!</title>
       </Head>
       <div>
-        <h1>POLIGON = isServer({props.isServer ? "TRUE" : "FALSE"}) {auth ? "TRUE" : "FALSE"}</h1>
+        <h1>POLIGON = isServer({isServer ? "TRUE" : "FALSE"}) {auth ? "TRUE" : "FALSE"}</h1>
         <div>{auth && "secret"}</div>
         <div>more</div>
         {list && (
@@ -36,10 +47,11 @@ const Auth = (props:IProps) => {
 }
 export default Auth;
 
-Auth.getInitialProps = async (ctx:MainNextPageContext) => {
-  console.log("AUTH", ctx.auth, ctx.isServer)
+Auth.getInitialProps = async (ctx) => {
+  const {auth, isServer} = await initialize(ctx)
+  console.log(222222222, ctx, auth, isServer)
   return {
-    name: 'zakon',
+    auth, isServer,
     list: [1,2,3,4777]
   }
 }
