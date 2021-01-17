@@ -1,57 +1,39 @@
-import Head from 'next/head'
-import React, {useContext, useMemo, useRef} from 'react';
+import React, { useContext } from 'react';
+import Head from "next/head";
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
-import {mainContext} from '../src/context/mainContext/mainContext';
-import {EVENTS} from "../src/context/events";
-import {initialize} from "./_app";
+import TestComponent from '../src/components/TestConmonent';
+import { mainContext } from '../src/context/mainContext/mainContext';
+import { MainProps, MainNextPageContext } from './_app';
 
-interface IProps{
-  auth: boolean
-  isServer: boolean
-  list: Array<number>
+interface IProps extends MainProps{
+
 }
 
-const Auth = (props:IProps) => {
+const Auth = (props: IProps) => {
   const {state, setAuth} = useContext(mainContext)
-  const {list} = props;
-  console.log(44, state.ctx, props)
   const BUTTON = () => {
-    EVENTS.setAuth(!state.ctx.auth)
-    // defaultContext.auth = !defaultContext.auth
-    // setAuth(!state.ctx.auth);
+    setAuth(!state.ctx.auth);
   }
-  const auth = useMemo(()=>{
-    return state.ctx.auth
-  },[state.ctx.auth])
-  const isServer = useMemo(()=>{
-    return state.ctx.isServer
-  },[state.ctx.isServer])
   return (
     <LayoutMain>
       <Head>
-        <title>POLIGON!</title>
+        <title>CheckAuth</title>
       </Head>
       <div>
-        <h1>POLIGON = isServer({isServer ? "TRUE" : "FALSE"}) {auth ? "TRUE" : "FALSE"}</h1>
-        <div>{auth && "secret"}</div>
-        <div>more</div>
-        {list && (
-          <ul>
-            {list.map(elem=><li key={elem}>{elem}</li>)}
-          </ul>
-        )}
-        <button onClick={BUTTON}>{state.ctx.auth ? "HIDE" : "SHOW"}</button>
+        {state.ctx.auth ? "SECRET SHOW" : "REGISTER!"}
+        <TestComponent {...props}/>
+        <button onClick={BUTTON} style={{color: 'black'}}>{state.ctx.auth ? "HIDE" : "SHOW"}</button>
+        <hr/>
+        <div>STATE: <pre>{JSON.stringify(state, null, 2)}</pre></div>
       </div>
     </LayoutMain>
-  )
-}
+  );
+};
+
 export default Auth;
 
-Auth.getInitialProps = async (ctx) => {
-  const {auth, isServer} = await initialize(ctx)
-  console.log(222222222, ctx, auth, isServer)
-  return {
-    auth, isServer,
-    list: [1,2,3,4777]
-  }
+
+Auth.getInitialProps = async (ctx: MainNextPageContext) => {
+  console.log(2, ctx.AUTH)
+  return {}
 }

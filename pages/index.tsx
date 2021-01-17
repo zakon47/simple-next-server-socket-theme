@@ -1,8 +1,6 @@
 import React, {useContext} from 'react';
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
 import {mainContext} from '../src/context/mainContext/mainContext';
-import {initialize} from "./_app";
-
 type Element = {
     postId: number
     id: number
@@ -38,10 +36,7 @@ const Index = (props: IProps) => {
 export default Index;
 
 Index.getInitialProps = async (ctx) => {
-    const {auth, isServer} = await initialize(ctx);
-    console.log(33, ctx)
     return {
-        auth, isServer,
         comments: [],
         maps: {}
     }

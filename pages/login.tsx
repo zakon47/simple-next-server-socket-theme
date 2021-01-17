@@ -2,8 +2,9 @@ import React from 'react';
 import Head from "next/head";
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
 import FormSignup from '../src/components/forms/form-signup/form-signup';
+import { MainNextPageContext, MainProps } from './_app';
 
-interface IProps {
+interface IProps extends MainProps{
 
 }
 
@@ -14,7 +15,9 @@ const Login = (props: IProps) => {
         <title>Login</title>
       </Head>
       <div>
-        <FormSignup/>
+        {!props.AUTH.auth && (
+          <FormSignup/>
+        )}
       </div>
     </LayoutMain>
   );
@@ -22,7 +25,3 @@ const Login = (props: IProps) => {
 
 export default Login;
 
-
-Login.getInitialProps = async (ctx) => {
-  return {}
-}

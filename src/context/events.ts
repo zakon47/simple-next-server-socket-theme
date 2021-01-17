@@ -41,4 +41,4 @@ class mainEventClass extends EventEmitter{
     }
 }
 
-export const EVENTS = new mainEventClass()
+export const Events = new mainEventClass()

@@ -18,14 +18,14 @@ const NavigationTop:FC<Props> = (props) => {
         <MyLink href="/auth">
           <a>Auth</a>
         </MyLink>
-        <MyLink href="/blog">
-          <a>Blog</a>
-        </MyLink>
         <MyLink href="/redirect">
           <a>Redirect</a>
         </MyLink>
-        <MyLink href="/poligon">
-          <a>Poligon</a>
+        <MyLink href="/blog">
+          <a>Blog</a>
+        </MyLink>
+        <MyLink href="/sprites">
+          <a>Sprites</a>
         </MyLink>
       </div>
       <style jsx>{`
