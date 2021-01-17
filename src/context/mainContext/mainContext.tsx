@@ -1,10 +1,10 @@
 import {createContext, Dispatch, useEffect, useState} from 'react';
-import {EVENTS, IData} from "../events";
+import { EVENTS, IMainEventEnum, IServiceData } from "../events";
 
 export let mainContext = createContext<IContext>({} as IContext)
 
 interface IState{
-  ctx: IData
+  ctx: IServiceData
   name: string
   cookie: string
   redirect: string
@@ -18,25 +18,29 @@ interface IContext {
   setAuth: (status: boolean)=>void
 }
 function MainContext(props){
-  const [state, setState] = useState<IState>({
-    ctx: EVENTS.get(),
-    name: "zakon",
-    list: [0,1,2,3],
-    cookie: '',
-    redirect: ''
+  const [state, setState] = useState<IState>(()=>{
+    console.log('EVENTS.get()', EVENTS.get())
+    return {
+      ctx: EVENTS.get(),
+      name: "zakon",
+      list: [0,1,2,3],
+      cookie: '',
+      redirect: ''
+    }
   })
   const singIn = () => {
     setState({...state, list: [...state.list, state.list.length]})
   }
   useEffect(()=>{
     console.log('START')
-    const handleEvent = (data:IData)=>{
+    const handleEvent = (data:IServiceData)=>{
+      console.log('START', 'handleEvent', data)
       setState(prevState => ({...prevState, ctx:{...data} }))
     }
-    EVENTS.myEvent.on('event', handleEvent)
+    EVENTS.on(IMainEventEnum.main, handleEvent)
     return ()=>{
       console.log('END')
-      EVENTS.myEvent.off('event', handleEvent)
+      EVENTS.off(IMainEventEnum.main, handleEvent)
     }
   },[])
   const setAuth = (status: boolean) => {
@@ -45,8 +49,16 @@ function MainContext(props){
   const saveCookie = (cookie:string) => {
     setState({...state, cookie})
   }
-  const data = {
-    state, setState, singIn, saveCookie, setAuth
+  console.log(111, state.ctx)
+  const data:IContext = {
+    state:{
+      ...state,
+      ctx: EVENTS.get()
+    },
+    setState,
+    singIn,
+    saveCookie,
+    setAuth
   }
   return (
     <mainContext.Provider value={data}>

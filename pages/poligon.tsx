@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Head from "next/head";
 import LayoutMain from '../layouts/LayoutMain/LayoutMain';
 import TestComponent from '../src/components/TestConmonent';
+import { initialize } from './_app';
+import { EVENTS, IServiceData } from '../src/context/events';
+import { mainContext } from '../src/context/mainContext/mainContext';
 
-interface IProps {
+interface IProps extends IServiceData{
 
 }
 
 const Poligon = (props: IProps) => {
-  console.log('props 1', props)
+  const {state} = useContext(mainContext)
+  console.log('props 1', props, state.ctx, EVENTS.get())
   return (
     <LayoutMain>
       <Head>
@@ -16,7 +20,7 @@ const Poligon = (props: IProps) => {
       </Head>
       <div>
         HELLO!
-        <TestComponent/>
+        <TestComponent {...props}/>
       </div>
     </LayoutMain>
   );
@@ -26,6 +30,7 @@ export default Poligon;
 
 
 Poligon.getInitialProps = async (ctx) => {
-  console.log('getInitialProps 1', ctx)
-  return {}
+  let INIT = await initialize(ctx, true)
+  console.log('getInitialProps 1', INIT)
+  return {...INIT}
 }

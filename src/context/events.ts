@@ -1,44 +1,44 @@
-import Event from 'events';
+import {EventEmitter} from "events";
 
-export interface IData {
+export interface IServiceData {
     auth: boolean|null
     isServer: boolean|null
-    from: string
+    referer: string
+}
+export enum IMainEventEnum {
+    main = 'main',
+    auth = 'auth',
+    isServer = 'isServer',
+    referer = 'referer'
+}
+class mainEventClass extends EventEmitter{
+    _data:IServiceData = {
+        auth: null,
+        isServer: null,
+        referer: ''
+    }
+    setAuth(status: boolean){
+        this._data.auth = status
+        this.emit(IMainEventEnum.auth, this._data)
+        this.emit(IMainEventEnum.main, this._data)
+    }
+    setIsServer(status: boolean){
+        this._data.isServer = status
+        this.emit(IMainEventEnum.isServer, this._data)
+        this.emit(IMainEventEnum.main, this._data)
+    }
+    setReferer(from: string){
+        this._data.referer = from
+        this.emit(IMainEventEnum.referer, this._data)
+        this.emit(IMainEventEnum.main, this._data)
+    }
+    get(){
+        return {...this._data}
+    }
+    async set(data:IServiceData) {
+        this._data = {...data}
+        this.emit(IMainEventEnum.main, this._data)
+    }
 }
 
-const ServerData: IData = {
-    auth: null,
-    isServer: null,
-    from: ''
-}
-
-const myEvent = new Event();
-const setAuth = (status: boolean) =>{
-    ServerData.auth = status
-    myEvent.emit('event', ServerData)
-}
-const setIsServer = (status: boolean) =>{
-    ServerData.isServer = status
-    myEvent.emit('event', ServerData)
-}
-const setReferer = (from: string) =>{
-    ServerData.from = from
-    myEvent.emit('event', ServerData)
-}
-const get = () => ({...ServerData})
-const set = (data:IData) => {
-    ServerData.auth = data.auth
-    ServerData.isServer = data.auth
-    ServerData.from = data.from
-    myEvent.emit('event', ServerData)
-}
-
-
-export const EVENTS = {
-    myEvent,
-    setAuth,
-    setIsServer,
-    setReferer,
-    get,
-    set,
-}
+export const EVENTS = new mainEventClass()
