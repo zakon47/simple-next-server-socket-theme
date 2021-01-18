@@ -28,6 +28,9 @@ const NavigationTop: FC<Props> = (props) => {
         <MyLink href="/sprites">
           <a>Sprites</a>
         </MyLink>
+        <MyLink href="/spinner">
+          <a>Spinner</a>
+        </MyLink>
       </div>
       <style jsx>{`
         .${styled.left} .-selected{
