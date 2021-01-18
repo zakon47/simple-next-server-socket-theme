@@ -16,7 +16,7 @@ const LayoutMain: FC<IProps> = (props) => {
       <div className={styles.padding}/>
       <div className={styles.body}>
         <div className={ClassName("fx",styles.content)} >
-          {state.AUTH.isLoading ? (
+          {state.AUTH.isLoadingPage ? (
             <div>Loading...</div>
           ): (
             props.children

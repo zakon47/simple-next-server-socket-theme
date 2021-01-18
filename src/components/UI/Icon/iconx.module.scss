@@ -1,8 +1,16 @@
 .svg{
+    height: auto;
+    fill: yellowgreen;
+}
+.default{
     width: 24px;
-    height: 24px;
-    fill: red;
-    svg{
-        fill: red;
-    }
+}
+.big{
+    width: 50px;
+}
+
+
+
+.displayInline{
+    display: inline-block;
 }

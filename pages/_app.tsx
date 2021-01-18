@@ -15,7 +15,7 @@ export let AUTH = {
   auth: false,
   isServer: false,
   referer: '',
-  isLoading: false,
+  isLoadingPage: false,
 }
 export interface MainProps{
   AUTH: typeof AUTH
@@ -27,10 +27,10 @@ function MyApp({Component, pageProps}: AppProps) {
   const router = useRouter()
   useEffect(() => {
     const handleRouteChangeStart = (url, { shallow }) => {
-      AUTH.isLoading = false;
+      AUTH.isLoadingPage = false;
     }
     const handleRouteChangeStop = (url, { shallow }) => {
-      AUTH.isLoading = false;
+      AUTH.isLoadingPage = false;
       console.error(
         `ROUTER [Stop] ${url} ${shallow ? 'with' : 'without'}!`
       )
@@ -49,7 +49,7 @@ function MyApp({Component, pageProps}: AppProps) {
           {(context)=>{
             //"нагланя замена"
             context.state.AUTH.isServer = AUTH.isServer
-            context.state.AUTH.isLoading = AUTH.isLoading
+            context.state.AUTH.isLoadingPage = AUTH.isLoadingPage
             return <Component {...pageProps}/>
           }}
         </mainContext.Consumer>

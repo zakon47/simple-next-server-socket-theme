@@ -41,8 +41,8 @@ function MainContext(props: IProps) {
     setState({...state, AUTH: {...state.AUTH, auth: status}})
   }
   const setIsLoading = (status: boolean) => {
-    AUTH.isLoading = status
-    setState({...state, AUTH: {...state.AUTH, isLoading: status}})
+    AUTH.isLoadingPage = status
+    setState({...state, AUTH: {...state.AUTH, isLoadingPage: status}})
   }
   const setReferer = (referer: string) => {
     AUTH.referer = referer
