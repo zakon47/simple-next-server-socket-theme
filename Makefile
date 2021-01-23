@@ -1,3 +1,4 @@
+SUDO = 
 DOCKER_NAME = NODE_BD
 SLEEP = 5
 DB_PW = 9608
@@ -18,15 +19,15 @@ run:
 sleep:
 	sleep SLEEP
 db_volume:
-	sudo docker volume create --name my-store
+	$(SUDO) docker volume create --name my-store
 db_volume_save:
-	sudo docker run --rm \
+	$(SUDO) docker run --rm \
 		-v my-store:/volume \
 		-v /home/zak/backup:/backup \
 		busybox sh \
 		-c 'cp -r /volume /backup'
 db_up: db_volume
-	sudo docker run -d --rm \
+	$(SUDO) docker run -d --rm \
 		--name $(DOCKER_NAME) \
 		-e POSTGRES_PASSWORD=$(DB_PW) \
 		-p $(DB_PORT):5432 \
@@ -34,10 +35,10 @@ db_up: db_volume
 		#-v my-store:/var/lib/postgresql/data \
 
 db_down:
-	sudo docker stop $(DOCKER_NAME)
+	$(SUDO) docker stop $(DOCKER_NAME)
 
 db_exec:
-	sudo docker exec \
+	$(SUDO) docker exec \
         -it $(DOCKER_NAME) \
         /bin/bash \
     && psql -U postgres
